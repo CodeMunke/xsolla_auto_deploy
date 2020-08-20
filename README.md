@@ -1,1 +1,5 @@
-# xsolla_auto_deploy
+# customer-service category prediction
+Tool to auto category detection
+
+
+up
