@@ -1,0 +1,1 @@
+# xsolla_auto_deploy
