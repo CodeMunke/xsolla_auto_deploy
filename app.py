@@ -4,7 +4,7 @@ import numpy as np
 import pandas as pd
 import pickle
 
-
+import lightgbm as lgb
 
 from flask import Flask
 from flask import request
@@ -15,6 +15,8 @@ import os
 import json
 from ast import literal_eval
 import traceback
+import pathlib
+
 
 application = Flask(__name__)
 
@@ -39,16 +41,16 @@ def registration():
     resp = {'message':'ok'
            ,'category': -1
            }
-
     try:
         getData = request.get_data()
-        json_params = json.loads(getData) 
-        
-        #напишите прогноз и верните его в ответе в параметре 'prediction'
+        json_params = json.loads(getData)
 
+        message = json_params['user_message']
 
+        pred_result = model.predict(vec.transform([message]).toarray())
 
-        
+        resp['category'] = pred_result.tolist()
+
     except Exception as e: 
         print(e)
         resp['message'] = e
@@ -61,7 +63,7 @@ def registration():
 
 if __name__ == "__main__":
     port = int(os.getenv('PORT', 5000))
-    application.run(debug=False, port=port, host='0.0.0.0' , threaded=True)
+    application.run(debug=True, port=port, host='0.0.0.0' , threaded=True)
 
 
 
